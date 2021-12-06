@@ -1,0 +1,28 @@
+version: '3'
+
+networks:
+  backend:
+    external: true
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./backend-api:/var/www/app
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - backend
+    ports:
+      - 80:80
+
+  backend-api:
+    build: ./backend-api
+    container_name: backend-api
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./backend-api:/var/www/app
+    networks:
+      - backend
+    tty: true
